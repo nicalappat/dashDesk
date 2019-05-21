@@ -19,6 +19,9 @@
     <link type="text/css" href="assets/plugins/codeprettifier/prettify.css" rel="stylesheet">                <!-- Code Prettifier -->
     <link type="text/css" href="assets/plugins/iCheck/skins/minimal/blue.css" rel="stylesheet">              <!-- iCheck -->
 
+    <link type="text/css" href="assets/plugins/gridforms/gridforms/gridforms.css" rel="stylesheet">                           <!-- Gridforms -->
+    <link type="text/css" href="assets/plugins/clockface/css/clockface.css" rel="stylesheet">
+
     <!--[if lt IE 10]>
         <script type="text/javascript" src="assets/js/media.match.min.js"></script>
         <script type="text/javascript" src="assets/js/respond.min.js"></script>
@@ -309,15 +312,231 @@
                 <div class="static-content-wrapper">
                     <div class="static-content">
                         <div class="page-content">
-                            <ol class="breadcrumb">
-                                
+                        	<button class="pull-right btn btn-success-alt" style="margin-top: 2%;margin-right: 2%;" ng-show="!createView" ng-click="createStudentView()"><i class="ti ti-plus"></i> Add New Student</button>
+                            <div class="container-fluid" style="padding-top: 4%;">
 
-                            </ol>
-                            <div class="container-fluid">
-                                 
 <div data-widget-group="group1">
 
-                           <div class="row">
+      <div class="row" ng-show="createView">
+      <div class="col-md-12">
+         <div class="panel panel-white" data-widget='{"draggable": "false"}'>
+            <div class="panel-heading">
+               <h2>Create New Account</h2>
+               <!-- <div class="panel-ctrls" data-actions-container="" data-action-collapse='{"target": ".panel-body"}'></div> -->
+            </div>
+            <div class="panel-body">
+               <form class="grid-form">
+                  <fieldset>
+                     <legend>Personal Details</legend>
+
+                     <div data-row-span="5">
+                        <div data-field-span="1">
+                           <label>Title</label>
+                           <label><input type="radio" name="customer-title[]" ng-model="newStudent.gender" value="M"> Mr.</label> &nbsp;
+                           <label><input type="radio" name="customer-title[]" ng-model="newStudent.gender" value="F"> Mrs.</label> &nbsp;
+
+                        </div>
+                        <div data-field-span="2">
+                           <label>First Name</label>
+                           <input ng-model="newStudent.fName" type="text">
+                        </div>
+                        <div data-field-span="2">
+                           <label>Last Name</label>
+                           <input ng-model="newStudent.lName" type="text">
+                        </div>
+                     </div>
+                     <div data-row-span="4">
+                        <div data-field-span="2">
+                           <label>Date of birth</label>
+                           <input id="dob1" ng-model="newStudent.dob" type="text">
+                        </div>
+                        <div data-field-span="1">
+                           <label>Height(in cm)</label>
+                           <input ng-model="newStudent.height" type="text">
+                        </div>
+                        <div data-field-span="1">
+                           <label>Weight(in kg)</label>
+                           <input ng-model="newStudent.weight" type="text">
+                        </div>
+                     <div data-row-span="3">
+                        <div data-field-span="1">
+                           <label>Religion</label>
+                           <select ng-model="newStudent.religion">
+                              <option value="Muslim" title="Muslim">Muslim</option>
+                              <option value="Hindu" title="Hindu">Hindu</option>
+                              <option value="Christian" title="Christian">Christian</option>
+                              <option value="Jain" title="Jain">Jain</option>
+                              <option value="Buddhist" title="Buddhist">Buddhist</option>
+                              <option value="Other" title="Other">Other</option>
+                           </select>
+                        </div>
+                        <div data-field-span="1">
+                           <label>Caste</label>
+                           <input ng-model="newStudent.caste" type="text">
+                        </div>
+                        <div data-field-span="1">
+                           <label>Blood Group</label>
+                           <select ng-model="newStudent.bloodGroup">
+                              <option value="A+" title="A+">A+</option>
+                              <option value="O+" title="O+">O+</option>
+                              <option value="B+" title="B+">B+</option>
+                              <option value="AB+" title="AB+">AB+</option>
+                              <option value="A-" title="A-">A-</option>
+                              <option value="O-" title="O-">O-</option>
+                              <option value="B-" title="B-">B-</option>
+                              <option value="AB-" title="AB-">AB-</option>
+                           </select>
+                        </div>
+                     </div>
+                     <br>
+                     <fieldset>
+                        <legend>Residential address</legend>
+                        <div data-row-span="2">
+                           <div data-field-span="1">
+                              <label>Flat no. and bldg. name, Road no./name</label>
+                              <input ng-model="newStudent.contactAddress" type="text">
+                           </div>
+                           <div data-field-span="1">
+                              <label>Area and landmark</label>
+                              <input ng-model="newStudent.location" type="text">
+                           </div>
+                        </div>
+                        <div data-row-span="3">
+                           <div data-field-span="1">
+                              <label>City</label>
+                              <input ng-model="newStudent.city" type="text">
+                           </div>
+                           <div data-field-span="1">
+                              <label>Pin code</label>
+                              <input ng-model="newStudent.pincode" type="text">
+                           </div>
+                           <div data-field-span="1">
+                              <label>Telephone Residence</label>
+                              <input ng-model="newStudent.contactPhone" type="text">
+                           </div>
+                        </div>
+                     </fieldset>
+                  </fieldset>
+                  <br>
+
+                  <fieldset>
+                     <legend>Parental Details</legend>
+                     <div data-row-span="4">
+                        <div data-field-span="1">
+                           <label>Father's Name</label>
+                           <input ng-model="newStudent.father.name" type="text">
+                        </div>
+                        <div data-field-span="1">
+                           <label>Father's Mobile Number</label>
+                           <input ng-model="newStudent.father.mobile" type="text">
+                        </div>
+                        <div data-field-span="1">
+                           <label>Father's E-Mail</label>
+                           <input ng-model="newStudent.father.email" type="text">
+                        </div>
+                        <div data-field-span="1">
+                           <label>Father's Occupation</label>
+                           <input ng-model="newStudent.father.occupation" type="text">
+                        </div>
+                     </div>
+                     <div data-row-span="4">
+                        <div data-field-span="1">
+                           <label>Father's Income</label>
+                           <input ng-model="newStudent.father.income" type="text">
+                        </div>
+                        <div data-field-span="3">
+                           <label>Father's Office Address</label>
+                           <input ng-model="newStudent.father.location" type="text">
+                        </div>
+                     </div>
+                     <div data-row-span="4">
+                        <div data-field-span="1">
+                           <label>Mother's Name</label>
+                           <input ng-model="newStudent.mother.name" type="text">
+                        </div>
+                        <div data-field-span="1">
+                           <label>Mother's Mobile Number</label>
+                           <input ng-model="newStudent.mother.mobile" type="text">
+                        </div>
+                        <div data-field-span="1">
+                           <label>Mother's E-Mail</label>
+                           <input ng-model="newStudent.mother.email" type="text">
+                        </div>
+                        <div data-field-span="1">
+                           <label>Mother's Occupation</label>
+                           <input ng-model="newStudent.mother.occupation" type="text">
+                        </div>
+                     </div>
+                     <div data-row-span="4">
+                        <div data-field-span="1">
+                           <label>Mother's Income</label>
+                           <input ng-model="newStudent.mother.income" type="text">
+                        </div>
+                        <div data-field-span="3">
+                           <label>Mother's Office Address</label>
+                           <input ng-model="newStudent.mother.location" type="text">
+                        </div>
+                     </div>
+                  </fieldset>
+
+                  <br><br>
+
+                  <fieldset>
+                     <legend>Academic Details</legend>
+                     <div data-row-span="4">
+                        <div data-field-span="1">
+                           <label>Class</label>
+                           <select ng-model="newStudent.class" ng-change="updateDivList()">
+                              <option value="PKG" title="PKG">PKG</option>
+                              <option value="LKG" title="LKG">LKG</option>
+                              <option value="UKG" title="UKG">UKG</option>
+                              <option value="1" title="1">1</option>
+                              <option value="2" title="2">2</option>
+                              <option value="3" title="3">3</option>
+                              <option value="4" title="4">4</option>
+                              <option value="5" title="5">5</option>
+                              <option value="6" title="6">6</option>
+                              <option value="7" title="7">7</option>
+                              <option value="8" title="8">8</option>
+                              <option value="9" title="9">9</option>
+                              <option value="10" title="10">10</option>
+                              <option value="11" title="11">11</option>
+                              <option value="12" title="12">12</option>
+                           </select>
+                        </div>
+                        <div data-field-span="1" ng-if="newStudent.class > 10">
+                           <label>Stream</label>
+                           <select ng-model="newStudent.stream" ng-change="updateDivList()">
+                              <option value="Science" title="Science">Science</option>
+                              <option value="Commerce" title="Commerce">Commerce</option>
+                              <option value="Humanities" title="Humanities">Humanities</option>
+                           </select>
+                        </div>
+                        <div data-field-span="1">
+                           <label>Division</label>
+                           <select ng-model="newStudent.division" ng-value="div.divisions" ng-options="div.divisions for div in divisions">
+                           </select>
+                        </div>
+                     </div>
+                  </fieldset>
+
+                  <br><br>
+
+                  
+                  <div class="clearfix pt-md">
+                  	<p ng-if="errorMessage" style="color: red;text-align: center;">{{errorMessage}}</p>
+                     <div class="pull-right">
+                        <button class="btn-primary btn" ng-click="createStudent()">Submit</button>
+                        <button class="btn-default btn" ng-click="cancelCreateView()">Cancel</button>
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+
+                           <div class="row" ng-show="!createView">
                               <div class="col-sm-3"></div>
                               <div class="col-sm-6">
                                  <div class="input-group" style="padding: 10px; border: none;">
@@ -335,7 +554,7 @@
                              <p style="font-size:21px; text-align: center; color: #7f8c8d">No results found.</p>
                            </div>
 
-               <div class="panel panel-default" ng-show="isSearched && isFound && !singleStudent">
+               <div class="panel panel-default" ng-show="isSearched && isFound && !singleStudent && !createView">
                   <div class="panel-heading">
                      <h2>List of Students</h2>
                   </div>
@@ -367,7 +586,7 @@
                   </div> <!-- /.panel-body -->
                 </div>
 
-   <div class="row" ng-show="isSearched && isFound && singleStudent">
+   <div class="row" ng-show="isSearched && isFound && singleStudent && !createView">
       <div class="col-sm-3">
          <div class="panel panel-profile">
            <div class="panel-body">
@@ -1063,8 +1282,12 @@
 
          </div><!-- .tab-content -->
       </div><!-- col-sm-8 -->
+     
+               
    </div>
 </div>
+
+      
 
                             </div> <!-- .container-fluid -->
                         </div> <!-- #page-content -->

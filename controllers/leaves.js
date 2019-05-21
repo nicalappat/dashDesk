@@ -110,6 +110,7 @@ angular.module('leavesApp', ['ngCookies'])
          if(response.data.status){
               console.log("Leave Approved");
               $scope.fetchContent();
+              $scope.comments = "";
           }
          else{
             console.log("Not found");
@@ -135,6 +136,7 @@ angular.module('leavesApp', ['ngCookies'])
          if(response.data.status){
               console.log("Leave Rejected");
               $scope.fetchContent();
+              $scope.comments = "";
           }
          else{
             console.log("Not found");

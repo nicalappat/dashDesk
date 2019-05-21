@@ -335,23 +335,19 @@
                                                 <td>Status</td>
                                                 <td>Date</td>
                                                 <td>Title</td>
-                                                <td>Time From</td>
-                                                <td>Time To</td>
-                                                <td></td>
+                                                <td>Time</td>
                                                 <td></td>
                                                 <td></td>
                                              </tr>
                                           </thead>
                                           <tbody>
                                              <tr ng-repeat="content in active_content track by $index">
-                                                <td>#{{((currentDisplayPage-1)*10) + $index + 1}}</td>
-                                                <td><span ng-show="content.status == 1"><i class="ti ti-thumb-up" aria-hidden="true" style="color: green"></i></span><span ng-show="content.status == 0"><i class="ti ti-thumb-down" aria-hidden="true" style="color: red"></i></span>
-                                                <td>{{content.eventDate}}</td>
-                                                <td style="font-weight: bold;">{{content.title}}</td>
-                                                <td>{{content.timeFrom}}</td>
-                                                <td>{{content.timeTo}}</td>
-                                                <td><a ng-click="viewMyContent(content)"><i class="fa fa-eye" aria-hidden="true" style="color: #bdc3c7"></i></a></td>
-                                                <td><a ng-click="showEditContentWindow(content)"><i class="fa fa-wrench" aria-hidden="true" style="color: #bdc3c7"></i></a></td>
+                                                <td style="cursor: pointer;" ng-click="viewMyContent(content)">#{{((currentDisplayPage-1)*10) + $index + 1}}</td>
+                                                <td style="cursor: pointer;" ng-click="viewMyContent(content)"><span ng-show="content.status == 1"><i class="ti ti-thumb-up" aria-hidden="true" style="color: green"></i></span><span ng-show="content.status == 0"><i class="ti ti-thumb-down" aria-hidden="true" style="color: red"></i></span>
+                                                <td style="cursor: pointer;" ng-click="viewMyContent(content)">{{content.eventDate}}</td>
+                                                <td style="font-weight: bold;cursor:pointer;">{{content.title}}</td>
+                                                <td style="cursor: pointer;" ng-click="viewMyContent(content)">{{content.timeFrom}} - {{content.timeTo}} </td>
+                                                <td ><a ng-click="showEditContentWindow(content)"><i class="fa fa-wrench" aria-hidden="true" style="color: #bdc3c7"></i></a></td>
                                                 <td><a ng-click="askForDelete(content, contentType)"><i class="ti ti-trash" aria-hidden="true" style="color: #bdc3c7"></i></a></td>
                                              </tr>
                                           </tbody>
@@ -365,18 +361,16 @@
                                                 <td>Date</td>
                                                 <td>Content</td>                                                
                                                 <td></td>
-                                                <td></td>
                                              </tr>
                                           </thead>
                                           <tbody>
                                              <tr ng-repeat="content in active_content track by $index">
-                                                <td>#{{$index+1}}</td>
-                                                <td>{{content.date[0]}}<br>{{content.date[1]}}</td>
-                                                <td>
+                                                <td style="cursor: pointer;" ng-click="viewMyContent(content)">#{{$index+1}}</td>
+                                                <td style="cursor: pointer;" ng-click="viewMyContent(content)">{{content.date[0]}}<br>{{content.date[1]}}</td>
+                                                <td style="cursor: pointer;" ng-click="viewMyContent(content)">
                                                    <strong>{{content.title}}</strong><br>
                                                    {{content.brief}}
                                                 </td>                                                
-                                                <td><a ng-click="viewMyContent(content)"><i class="fa fa-eye" aria-hidden="true" style="color: #bdc3c7"></i></a></td>
                                                 <td><a ng-click="askForDelete(content, 'notification')"><i class="ti ti-trash" aria-hidden="true" style="color: #bdc3c7"></i></a></td>
                                              </tr>
                                           </tbody>
@@ -445,6 +439,13 @@
                                                       <input type="text" ng-model="addNewContent.host" placeholder="" class="form-control">
                                                    </div>
                                                 </div> 
+                                                <div class="form-group radio">
+                                                   <label for="form-name" class="col-sm-3 control-label">Event Type</label>
+                                                   <div class="col-sm-8">
+                                                      <label style="padding-right: 12%;margin-top: 2%;"><input type="radio" ng-model="addNewContent.eventType" name="public" value="public">Public</label>
+                                                      <label style="padding-right: 4%;margin-top: 2%;"><input type="radio" ng-model="addNewContent.eventType" name="private" value="private">Private</label>
+                                                   </div>
+                                                </div>
                                                 <div class="form-group">
                                                    <label for="form-name" class="col-sm-3 control-label">Recurrance</label>
                                                    <div class="col-sm-8">
@@ -460,13 +461,58 @@
                                                    <div class="col-sm-8">
                                                       <input type="text" ng-model="addNewContent.recursionEndDate" id="endDate" placeholder="" class="form-control">
                                                    </div>
-                                                </div>   
-
+                                                </div>
                                                 <div class="form-group">
-                                                   <label class="col-sm-3 control-label">Target Audience Restriction (Optional)</label>
+                                                   <label for="form-name" class="col-sm-3 control-label">Target</label>
+                                                   <div class="col-sm-8">
+                                                      <select ng-model="addNewContent.target" class="form-control" placeholder="">
+                                                         <option value ="0" selected="">Everyone</option>
+                                                         <option value ="1">Class Specific</option>
+                                                         <option value ="2">Section Specific</option>
+                                                      </select>
+                                                   </div>
+                                                </div>
+                                                <div class="form-group" ng-if="addNewContent.target == 1">
+                                                   <label for="form-name" class="col-sm-3 control-label">Target Specific</label>
+                                                   <div class="col-sm-8">
+                                                      <select ng-model="addNewContent.targetSpecific" class="form-control" placeholder="">
+                                                         <option disabled="" value="0" selected="">-- Select Class --</option>
+                                                         <option value ="PKG">PKG</option>
+                                                         <option value ="LKG">LKG</option>
+                                                         <option value ="UKG">UKG</option>
+                                                         <option value ="1">1</option>
+                                                         <option value ="2">2</option>
+                                                         <option value ="3">3</option>
+                                                         <option value ="4">4</option>
+                                                         <option value ="5">5</option>
+                                                         <option value ="6">6</option>
+                                                         <option value ="7">7</option>
+                                                         <option value ="8">8</option>
+                                                         <option value ="9">9</option>
+                                                         <option value ="10">10</option>
+                                                         <option value ="11">11</option>
+                                                         <option value ="12">12</option>
+                                                      </select>
+                                                   </div>
+                                                </div>
+                                                <div class="form-group" ng-if="addNewContent.target == 2">
+                                                   <label for="form-name" class="col-sm-3 control-label">Target Specific</label>
+                                                   <div class="col-sm-8">
+                                                      <select ng-model="addNewContent.targetSpecific" class="form-control" placeholder="">
+                                                         <option disabled="" value="0" selected="">-- Select Section --</option>
+                                                         <option value ="KG">Kindergarten</option>
+                                                         <option value ="LP">Lower Primary</option>
+                                                         <option value ="UP">Upper Primary</option>
+                                                         <option value ="HS">High School</option>
+                                                         <option value ="HSS">Higher Secondary</option>
+                                                      </select>
+                                                   </div>
+                                                </div>
+
+                                                <div class="form-group" ng-show="addNewContent.target !== '' && addNewContent.targetSpecific !== ''">
+                                                   <label class="col-sm-3 control-label">Target Audience</label>
                                                    <div class="col-sm-8">
                                                       <input type="text" class="form-control" ng-model="addNewContent.targetAudience" id="tokenfield-typeahead"/>
-                                                      <p style="margin: 5px 0px 0px 0px; color: #bdc3c7; font-size: 12px">Leave it blank if the Event needs to be sent to all users.</p>
                                                       <p style="font-size: 11px; color: #bdc3c7; margin-top: 5px;">Available Targets:<tag ng-repeat="class in myClassList" class="btn btn-info-alt btn-xs" ng-attr-id="{{ 'button_' + class.value }}" style="margin-left: 4px" ng-click="addTargetEvent(class.value)">{{class.value}}</tag> </p>
                                                    </div> 
                                                 </div>
@@ -548,7 +594,14 @@
                                                    <div class="col-sm-8">
                                                       <input type="text" ng-model="myEditContent.host" placeholder="" class="form-control">
                                                    </div>
-                                                </div> 
+                                                </div>
+                                                <div class="form-group radio">
+                                                   <label for="form-name" class="col-sm-3 control-label">Event Type</label>
+                                                   <div class="col-sm-8">
+                                                      <label style="padding-right: 12%;margin-top: 2%;"><input type="radio" ng-model="myEditContent.eventType" name="public" value="public">Public</label>
+                                                      <label style="padding-right: 4%;margin-top: 2%;"><input type="radio" ng-model="myEditContent.eventType" name="private" value="private">Private</label>
+                                                   </div>
+                                                </div>
                                              </form>
                                           </div>
                                        </div>
@@ -562,7 +615,7 @@
                                           <div class="col-sm-12">
                                              <button class="btn-success btn pull-right" ng-click="saveEditChanges()">Make Changes</button>
                                              <button class="btn-default btn pull-right" style="margin-right: 10px" ng-click="hideNewContent()" >Cancel</button>
-                                             <button class="btn-warning btn pull-left" style="margin-right: 10px" ng-click="cancelEvent(myEditContent.id)" ng-show="myEditContent.status == 1" >Deactivate</button>
+                                             <button class="btn-warning btn pull-left" style="margin-right: 10px" ng-click="cancelEvent(myEditContent)" ng-show="myEditContent.status == 1" >Deactivate</button>
                                              <button class="btn-warning btn pull-left" style="margin-right: 10px" ng-click="askForReschedule(myEditContent)" ng-show="myEditContent.status == 0" >Reschedule</button>
                                           </div>
                                        </div>
@@ -641,7 +694,7 @@
                            <p style="font-size: 21px; color: #2980b9" ng-if="contentType != 'coupons'">{{viewContent.title}}</p>
                            <img ng-src="{{viewContent.url}}" style="margin-bottom: 15px" width="100%" ng-if="viewContent.isPhoto">
                            <p style="margin: 0; color: #7f8c8d; font-size: 18px">{{viewContent.brief}}</p>                          
-                           <p style="margin: 0; margin-top: 15px; color: #bdc3c7" ng-if="contentType == 'event'">Event Date: <tag style="font-weight: bold; color: #2ecc71">{{viewContent.eventDate}}</tag> | Target Audience: <tag style="font-weight: bold; color: #2ecc71"><span ng-show="viewContent.targetAudience != '' || viewContent.targetAudience != '0'">{{viewContent.targetAudience}}</span><span ng-show="viewContent.targetAudience == '' || viewContent.targetAudience == '0'">Everyone</span></tag> | From: <tag style="font-weight: bold; color: #2ecc71">{{viewContent.timeFrom}}</tag> | To: <tag style="font-weight: bold; color: #2ecc71">{{viewContent.timeTo}}</tag> | Venue: <tag style="font-weight: bold; color: #2ecc71">{{viewContent.venue}}</tag> | Host: <tag style="font-weight: bold; color: #2ecc71">{{viewContent.host}}</tag></p>
+                           <p style="margin: 0; margin-top: 15px; color: #bdc3c7" ng-if="contentType == 'event'">Event Date: <tag style="font-weight: bold; color: #2ecc71">{{viewContent.eventDate}}</tag> | Target Audience: <tag style="font-weight: bold; color: #2ecc71"><span ng-show="viewContent.targetAudience != '' || viewContent.targetAudience != '0'">{{viewContent.targetAudience}}</span><span ng-show="viewContent.targetAudience == '' || viewContent.targetAudience == '0'">Everyone</span></tag> <br> Time: <tag style="font-weight: bold; color: #2ecc71">{{viewContent.timeFrom}} - {{viewContent.timeTo}}</tag> | Venue: <tag style="font-weight: bold; color: #2ecc71">{{viewContent.venue}}</tag> | Host: <tag style="font-weight: bold; color: #2ecc71">{{viewContent.host}}</tag></p>
                            <p style="margin: 0; margin-top: 15px; color: #bdc3c7" ng-if="contentType == 'notification'">Sent at <tag style="font-weight: bold; color: #2ecc71">{{viewContent.date[0] + " " + viewContent.date[1]}} </tag> | Target Audience: <tag style="font-weight: bold; color: #2ecc71"><span ng-show="viewContent.targetAudience != ''">{{viewContent.targetAudience}}</span><span ng-show="viewContent.targetAudience == ''">Everyone</span></tag></p>                                                      
                         </div>
                         <div class="modal-footer">

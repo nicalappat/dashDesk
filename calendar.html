@@ -286,9 +286,17 @@
                            <div class="row">
                               <div class="col-md-12">
                                  <div class="panel panel-transparent" data-widget='{"draggable": "false"}'>
-                                    <div class="panel-heading">
-                                       <h1>School Calendar</h1>
-                                       <button class="pull-right btn btn-default" ng-click="addHolidayModal()"><i class="ti ti-plus"></i> Add New Holiday</button>
+                                    <div class = "row">
+                                       <div class="panel-heading">
+                                          <div class="col-md-6">
+                                             <h1>School Calendar</h1>
+                                          </div>
+                                          <div class="col-md-6" style="padding-top: 2%;">
+                                             <button class="pull-right btn btn-success-alt" ng-click="addHolidayModal()"><i class="ti ti-plus"></i> Add New Holiday</button>
+                                             <br>
+                                             <button class="pull-right btn btn-sm btn-primary-alt" ng-click="viewHolidayList()"><i class="ti ti-plus"></i>View Holidays List</button>
+                                          </div>
+                                       </div>
                                     </div>
                                     <div class="panel-body">
                                        <div class="row">
@@ -298,7 +306,60 @@
                                  </div>
                               </div>
                            </div>
+                           
+       <!-- Holiday List MODAL -->
+         <div class="modal fade" id="listModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                        <div class="modal-header" style="color: #27ae60; border: none; padding-bottom: 0">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title" style="font-size: 16px">Holidays List</h4>
+                        </div>                              
+                <div class="modal-body">    
+                       <p ng-if="!active_content.length" style="padding: 20px; text-align: center" class="ng-scope">No holidays made so far.</p>
+                                       <!-- Display Holidays List -->
+                                       <table class="table m-n" ng-if="active_content.length && isContentFound">
+                                          <thead>
+                                             <tr style="font-weight: 400; color: #2980b9 !important; background: #ecf0f1">
+                                                <td></td>
+                                                <td>Holiday Name</td>
+                                                <td>From</td>
+                                                <td>To</td>
+                                                <td></td>
+                                             </tr>
+                                          </thead>
+                                          <tbody>
+                                             <tr ng-repeat="content in active_content track by $index">
+                                                <td>#{{ $index + 1}}</td>
+                                                <td style="font-weight: bold;">{{content.title}}</td>
+                                                <td>{{content.start}} </td>
+                                                <td>{{content.end}}</td>
+                                                <td><i class="ti ti-trash" aria-hidden="true" style="color: #bdc3c7" ng-click="deleteHoliday(content)"></i></td>
+                                             </tr>
+                                          </tbody>
+                                       </table>      
+                </div>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+          </div><!-- /.modal -->
+          
+          <!--  Holiday Delete Modal -->
+               <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-body">
+                           <p style="font-size: 18px; color: red; margin: 10px 0 0 0;">Are you sure you want to delete '{{askContent.title}}' from {{askContent.start}} to {{askContent.end}}?</p>
+                        </div>                                                                                       
+                        <div class="modal-footer">                                                    
+                           <button type="button" style="float: left" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                           <button type="button" class="btn btn-danger" ng-click="deleteConfirmHoliday(askContent.holidayId)">Delete</button>
 
+                        </div>
+                     </div><!-- /.modal-content -->
+                  </div><!-- /.modal-dialog -->
+               </div><!-- /.modal -->
+          
+          
                                                    <!-- NEW HOLIDAY Modal -->
                <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                   <div class="modal-dialog">

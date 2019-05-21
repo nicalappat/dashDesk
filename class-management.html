@@ -297,47 +297,45 @@
                            <li><a href="#">UI Components</a></li>
                            <li class="active"><a href="ui-tiles.html">Tiles</a></li>
                         </ol>
-                        <div style="padding-top:2%">
-                           <div class="col-md-8">
-
-                           </div>
-                           <div class="col-md-2">
-                              <form>
-                                 <select id="classSelect" class="form-model" ng-model="classSelect" ng-change="fetchContent()">
-                                    <option disabled="">-- Select Class --</option>
-                                    <option value ="PKG">PKG</option>
-                                    <option value ="LKG">LKG</option>
-                                    <option value ="UKG">UKG</option>
-                                    <option value ="1">1</option>
-                                    <option value ="2">2</option>
-                                    <option value ="3">3</option>
-                                    <option value ="4">4</option>
-                                    <option value ="5">5</option>
-                                    <option value ="6">6</option>
-                                    <option value ="7">7</option>
-                                    <option value ="8">8</option>
-                                    <option value ="9">9</option>
-                                    <option value ="10">10</option>
-                                    <option value ="11">11</option>
-                                    <option value ="12">12</option>
-                                 </select>
-                              </form>
-                           </div>
-                           <div class="col-md-2 demo-btns">
-                             <a class="btn btn-success btn-label" href="#" ng-click="addClassModal()"><i class="ti ti-plus"></i>Add Class</a>
-                           </div>
+                        <div style="padding:2%;" class="row">
+                           <div class="panel" data-widget='{"draggable": "false"}'>
+                              <div class="panel-heading">
+                                 <h2>Classes</h2>
+                                    <a class="btn btn-sm btn-success-alt btn-label" href="#" style="float: right;margin-top:12px;margin-left: 12px;" ng-click="addClassModal()"><i class="ti ti-plus"></i>Add Class</a> 
+                                    <form style="float: right">
+                                    <select id="classSelect" class="form-model" ng-model="classSelect" ng-change="fetchContent()">
+                                       <option disabled="">-- Select Class --</option>
+                                       <option value ="PKG">PKG</option>
+                                       <option value ="LKG">LKG</option>
+                                       <option value ="UKG">UKG</option>
+                                       <option value ="1">1</option>
+                                       <option value ="2">2</option>
+                                       <option value ="3">3</option>
+                                       <option value ="4">4</option>
+                                       <option value ="5">5</option>
+                                       <option value ="6">6</option>
+                                       <option value ="7">7</option>
+                                       <option value ="8">8</option>
+                                       <option value ="9">9</option>
+                                       <option value ="10">10</option>
+                                       <option value ="11">11</option>
+                                       <option value ="12">12</option>
+                                    </select>
+                                 </form>                   
+                              </div>
+                              <div class="panel-body">
+                                    <div ng-repeat="content in active_content" ng-click="showClassOptions(content)" class="col-md-3">
+                                       <div class="info-tile">
+                                          <div class="tile-heading" style="font-size:30px"><span>{{content.class}}-{{content.division}}</span><span ng-if="content.stream" style ="font-size:17px"><span style="font-size:30px"> | </span>{{content.stream}} </span></div>
+                                          <div style="font-size:20px;text-align:right;padding-top:5%;"><span>{{content.studentCount}} students</span></div>
+                                          <div style="font-size:20px;text-align:right;padding-bottom:7%;"><span>5 absentees</span></div>
+                                          <div class="tile-footer" style="font-size:13px;"><a  href="#" class="text-danger" ><span ng-show="content.classTeacherGender=='M'">Mr.</span><span ng-show="content.classTeacherGender == 'F' ">Mrs.</span> {{content.classTeacherfName + " " + content.classTeacherlName}}</a></div>
+                                       </div>
+                                    </div>
+                              </div>
+                           </div>    
                         </div>
-   <div style="padding-top:2.5%;" class="row">
-      <div ng-repeat="content in active_content" ng-click="showClassOptions(content)" class="col-md-3">
-         <div class="info-tile">
-            <div class="tile-heading" style="font-size:30px"><span>{{content.class}}-{{content.division}}</span><span ng-if="content.stream"> | {{content.stream}} </span></div>
-            <div style="font-size:20px;text-align:right;padding-top:5%;"><span>{{content.studentCount}} students</span></div>
-            <div style="font-size:20px;text-align:right;padding-bottom:7%;"><span>5 absentees</span></div>
-            <div class="tile-footer" style="font-size:13px;"><a  href="#" class="text-danger" ><span ng-show="content.classTeacherGender= 'M'">Mr.</span><span ng-show="content.classTeacherGender == 'F' ">Mrs.</span> {{content.classTeacherfName + " " + content.classTeacherlName}}</a></div>
-         </div>
-      </div>    
-   </div>
-
+                        
   
    <!-- CLASS MODAL -->
                             <div class="modal fade" id="classModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

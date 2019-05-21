@@ -134,6 +134,9 @@ angular.module('pollsApp', ['ngCookies'])
     else if($scope.newPollContent.endDate === ""){
                   $scope.newContentSaveError = "Add an End Date for your poll";
                 }
+    else if($scope.newPollContent.target === ""){
+                  $scope.newContentSaveError = "Mention the Target Audience";
+                }
     else if(eventDate < todate){
                   $scope.newContentSaveError = "Enter a later date";
                }
@@ -225,10 +228,37 @@ angular.module('pollsApp', ['ngCookies'])
                }
   }
 
+  $scope.deactivatePollModal = function(){
+    $('#deactivationModal').modal('show');
+    console.log('Hi!');
+  }
+
+  $scope.deactivatePoll = function(pollId){
+        var data = {};
+        data.token = $cookies.get("dashManager");
+        data.pollId = pollId;
+        
+        console.log("Going", data);
+
+        $http({
+          method  : 'POST',
+          url     : 'http://www.schooldash.xyz/services/deactivatepoll.php',
+          data    : data,
+          headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+         })
+         .then(function(response) {
+            console.log(response);
+            $('#deactivationModal').modal('hide');
+            $scope.init();
+            $scope.pollSelect = false;
+          });
+      }
+
   $scope.showPollStats = function(poll){
         
         $scope.pollSelect = true;
         $scope.selectedPoll = poll;
+        console.log($scope.selectedPoll);
 
         var data = {};
         data.token = $cookies.get("dashManager");
@@ -317,7 +347,7 @@ $scope.$watch('newPollContent.targetSpecific', function() {
       
               var temp = JSON.parse(data);
 
-                var engine = new Bloodhound({
+                var engine = new ooodhound({
           local: $scope.targetList,
           datumTokenizer: function(d) {
             return Bloodhound.tokenizers.whitespace(d.value); 
@@ -352,13 +382,10 @@ $scope.$watch('newPollContent.targetSpecific', function() {
        
        $scope.loadMore = function() {
           $scope.limiter = $scope.limiter + 5;
+          
           var data = {};
           data.token = $cookies.get("dashManager");
-
-          data.isActive = 1;
-          
-          data.filter = $scope.filterMode;
-        data.isFilter = $scope.isFilterApplied? 1 : 0;
+          data.limiter = $scope.limiter;
             
           $http({
             method  : 'POST',
@@ -369,8 +396,8 @@ $scope.$watch('newPollContent.targetSpecific', function() {
            .then(function(response) {
               console.log(response);
               if(response.data.status){
-                $scope.feedbacks = $scope.feedbacks.concat(response.data.response);
-                if($scope.feedbacks.length%5 != 0){
+                $scope.polls = $scope.polls.concat(response.data.response);
+                if($scope.polls.length%5 != 0){
                   $scope.isMoreLeft = false;
                 }
               }

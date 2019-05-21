@@ -225,7 +225,7 @@ angular.module('classesApp', ['ngCookies'])
            else{ 
 
               $scope.isContentFound = false;      
-              $scope.active_content = {};
+              $scope.active_content1 = {};
 
            }
               }); 
@@ -262,7 +262,7 @@ angular.module('classesApp', ['ngCookies'])
            else{ 
 
               $scope.isContentFound = false;      
-              $scope.active_content = {};
+              $scope.active_content2 = {};
 
            }
               }); 

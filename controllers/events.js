@@ -100,6 +100,7 @@ angular.module('eventsApp', ['ngCookies'])
    co_data.type = type;
    co_data.page = pageid - 1;
    co_data.token = $cookies.get("dashManager");
+   console.log(co_data);
    
    if(type == "event"){
            $http({
@@ -451,22 +452,28 @@ angular.module('eventsApp', ['ngCookies'])
                else if($scope.myEditContent.venue == ""){
                   $scope.editContentSaveError = "Mention the event venue";
                }
+               else if($scope.myEditContent.eventType == ""){
+                  $scope.editContentSaveError = "Mention the Event Type";
+               }
                
             else{
 
                   
-        $scope.myEditContent.eventDate = formatToStandardDate(document.getElementById('myEventDate1').value);
+        var evDate1 = formatToStandardDate(document.getElementById('myEventDate1').value);
     
     var data = {};
     data.token = $cookies.get("dashManager");
     data.id = $scope.myEditContent.id;
     data.title = $scope.myEditContent.title;
     data.brief = $scope.myEditContent.brief; 
-    data.eventDate = $scope.myEditContent.eventDate; 
+    data.eventDate = evDate1; 
     data.timeTo = $scope.myEditContent.timeTo; 
     data.timeFrom = $scope.myEditContent.timeFrom; 
     data.venue = $scope.myEditContent.venue;
-    data.host = $scope.myEditContent.host;      
+    data.eventType = $scope.myEditContent.eventType;
+    data.host = $scope.myEditContent.host;   
+
+
         
            console.log('GOes to Server')
                console.log(data) 
@@ -486,7 +493,7 @@ angular.module('eventsApp', ['ngCookies'])
                        if(response.data.status){
                         alert('Success!');   
                         $scope.initializeContent(type, $scope.currentDisplayPage);  
-                               
+                        $scope.editFirstWindowFlag = false;
                        }
                        else{
                         $scope.editContentSaveError = response.data.error;
@@ -527,35 +534,53 @@ angular.module('eventsApp', ['ngCookies'])
   //List of Classes
 
   $scope.myClassList = "";
-  
-  $.get("https://www.zaitoon.online/services/fetchclassinfosimple.php", function(data){
-          var temp = JSON.parse(data);
-          if(0){
-    $scope.myClassList = temp.response;
-          }
-          else{
-            $scope.myClassList = [{value: '12-A'}, {value: '12-B'}, {value: '11-A'} , {value: '11-C'}, {value: '11-B'}];
-          }
-          
-            var engine = new Bloodhound({
-      local: $scope.myClassList,
-      datumTokenizer: function(d) {
-        return Bloodhound.tokenizers.whitespace(d.value); 
-      },
-      queryTokenizer: Bloodhound.tokenizers.whitespace
-    });
-  
-    engine.initialize();
-  
-  
-    $('#tokenfield-typeahead').tokenfield({
-      typeahead: [null, { source: engine.ttAdapter() }]
-    });
-    $('#tokenfield-typeahead1').tokenfield({
-      typeahead: [null, { source: engine.ttAdapter() }]
-    });
+$scope.$watch('addNewContent.targetSpecific', function() { 
+  if($scope.addNewContent.targetSpecific !== ""){
+        var data = {};
+            data.token = $cookies.get("dashManager");
+            data.target = $scope.addNewContent.target;
+            data.targetSpecific = $scope.addNewContent.targetSpecific;
+
+            $http({
+              method  : 'POST',
+              url     : 'http://www.schooldash.xyz/services/fetchtarget.php',
+              data    : data,
+              headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+             })
+             .then(function(response) {
+                if(response.data.status){
+
+                  $scope.isFound = true;
+                  $scope.myClassList = response.data.response;
+                  var temp = JSON.parse(response);
+                }
+                else{
+                  $scope.isFound = false;
+                  $scope.myClassList = [{value: '12-A'}, {value: '12-B'}, {value: '11-A'} , {value: '11-C'}, {value: '11-B'}];
+                }
+      
+              var temp = JSON.parse(data);
+
+        var engine = new Bloodhound({
+        local: $scope.myClassList,
+        datumTokenizer: function(d) {
+          return Bloodhound.tokenizers.whitespace(d.value); 
+        },
+        queryTokenizer: Bloodhound.tokenizers.whitespace
+      });
     
-        });   
+      engine.initialize();
+    
+    
+      $('#tokenfield-typeahead').tokenfield({
+        typeahead: [null, { source: engine.ttAdapter() }]
+      });
+      $('#tokenfield-typeahead1').tokenfield({
+        typeahead: [null, { source: engine.ttAdapter() }]
+      });
+    });
+  }
+});   
         
     
         
@@ -612,10 +637,14 @@ angular.module('eventsApp', ['ngCookies'])
       $scope.addNewContent.eventDate = "";
       $scope.addNewContent.timeFrom = "";
       $scope.addNewContent.timeTo = "";
+      $scope.addNewContent.eventType = "";
       $scope.addNewContent.recurranceFrequency = 0;
       $scope.addNewContent.recursionEndDate = "";
       $scope.addNewContent.isRecurring = "";
-      
+      $scope.addNewContent.target = "";
+      $scope.addNewContent.targetSpecific = "";
+      $scope.addNewContent.targetAudience = "";
+
       $scope.isPhotoAttached = false;
       $scope.myPhotoURL = "";
       
@@ -775,7 +804,7 @@ angular.module('eventsApp', ['ngCookies'])
          
          
          
-         if($scope.addNewContent.recurranceFrequency == 0){
+         if($scope.addNewContent.recurranceFrequency === 0){
           $scope.addNewContent.isRecurring = 0;
           $scope.addNewContent.recursionEndDate = "";
          }
@@ -858,9 +887,8 @@ angular.module('eventsApp', ['ngCookies'])
                else if($scope.addNewContent.venue == ""){
                   $scope.newContentSaveError = "Mention the event venue";
                }
-
-              else if($scope.addNewContent.host == ""){
-                  $scope.newContentSaveError = "Mention the event host";
+               else if($scope.addNewContent.eventType == ""){
+                  $scope.newContentSaveError = "Mention the event type";
                }
 
                else if($scope.addNewContent.recurranceFrequency != "0" && $scope.addNewContent.recursionEndDate == ""){
@@ -892,9 +920,8 @@ angular.module('eventsApp', ['ngCookies'])
                   $scope.newContentSaveError = "";
                   
                   $('#loading').show(); $("body").css("cursor", "progress");
-                  
-         $scope.addNewContent.eventDate = formatToStandardDate(document.getElementById('myEventDate').value);
-         $scope.addNewContent.recursionEndDate = formatToStandardDate(document.getElementById('endDate').value);
+         var evDate = formatToStandardDate(document.getElementById('myEventDate').value);
+        var recEndDate = formatToStandardDate(document.getElementById('endDate').value);
                   
                   
                   var data = {};
@@ -905,9 +932,10 @@ angular.module('eventsApp', ['ngCookies'])
                data.timeFrom = $scope.addNewContent.timeFrom;
                data.timeTo = $scope.addNewContent.timeTo;
                data.host = $scope.addNewContent.host;
-               data.eventDate = $scope.addNewContent.eventDate;
+               data.eventType = $scope.addNewContent.eventType;
+               data.eventDate = evDate;
                data.recurranceFrequency = $scope.addNewContent.recurranceFrequency;
-               data.recursionEndDate = $scope.addNewContent.recursionEndDate;
+               data.recursionEndDate = recEndDate;
                data.isRecurring = $scope.addNewContent.isRecurring;
                data.photoURL = $scope.addNewContent.myPhotoURL;
                data.targetAudience = $scope.addNewContent.targetAudience;
@@ -1092,48 +1120,5 @@ angular.module('eventsApp', ['ngCookies'])
          $scope.initializeContent('event', $scope.currentDisplayPage); 
 
       }
-   
 
-        //Refresh Badge Counts
-        var admin_data = {};
-        admin_data.token = $cookies.get("zaitoonAdmin");
-        $http({
-          method  : 'POST',
-          url     : 'https://zaitoon.online/services/fetchbadgecounts.php',
-          data    : admin_data,
-          headers : {'Content-Type': 'application/x-www-form-urlencoded'}
-         })
-         .then(function(response) {
-            if(response.data.status){
-                  $scope.reservations_length = response.data.reservationsCount;
-                  $scope.pending_orders_length = response.data.ordersCount;
-                  $scope.helprequests_length = response.data.helpCount;
-               }
-               else{
-                  $scope.reservations_length = 0;
-                  $scope.pending_orders_length = 0;
-                  $scope.helprequests_length = 0;
-               }
-         });
-
-        $scope.Timer = $interval(function () {
-          $http({
-            method  : 'POST',
-            url     : 'https://zaitoon.online/services/fetchbadgecounts.php',
-            data    : admin_data,
-            headers : {'Content-Type': 'application/x-www-form-urlencoded'}
-           })
-           .then(function(response) {
-                if(response.data.status){
-                  $scope.reservations_length = response.data.reservationsCount;
-                  $scope.pending_orders_length = response.data.ordersCount;
-                  $scope.helprequests_length = response.data.helpCount;
-               }
-               else{
-                  $scope.reservations_length = 0;
-                  $scope.pending_orders_length = 0;
-                  $scope.helprequests_length = 0;
-               }
-           });
-        }, 20000);
   });

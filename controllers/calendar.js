@@ -66,6 +66,8 @@ angular.module('calendarApp', ['ngCookies'])
 
 					  var myDate1=value.end;
 					  myDate1=myDate1.split("-");
+					  var a = Number(myDate1[0] || 0);
+            		  		  myDate1[0] = a+1;
 					  value.end=myDate1[2]+"-"+myDate1[1]+"-"+myDate1[0];
 					  
 			      }
@@ -142,6 +144,52 @@ angular.module('calendarApp', ['ngCookies'])
    $scope.addHolidayModal = function(){
    	$('#viewModal').modal('show');
    }
+   $scope.viewHolidayList = function(){
+   	var data = {};
+        
+        data.token = $cookies.get("dashManager");
+        
+        $http({
+          method  : 'POST',
+          url     : 'http://schooldash.xyz/services/fetchholidaylist.php',
+          data    : data,
+          headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+         })
+         .then(function(response) {
+         console.log(response);
+         $scope.isContentFound = true;
+          $scope.active_content = response.data.response;
+         console.log($scope.active_content);
+         });
+         $('#listModal').modal('show');
+   	
+   }
+   $scope.deleteHoliday = function(content){
+   	$('#confirmationModal').modal('show');
+   	$scope.askContent = content;
+   }
+   $scope.deleteConfirmHoliday = function(id){
+   	var data = {};
+        
+        data.token = $cookies.get("dashManager");
+        data.holidayId = id;
+        
+        $http({
+          method  : 'POST',
+          url     : 'http://schooldash.xyz/services/deleteholiday.php',
+          data    : data,
+          headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+         })
+         .then(function(response) {
+         console.log(response);
+          $('#confirmationModal').modal('hide');
+         });
+         
+        $timeout(function() {
+          $scope.viewHolidayList();
+          $scope.fetchCalendarEvents();
+        }, 200);   
+   }
 
    $scope.addHoliday = function(){
    		var data = {};
@@ -189,14 +237,15 @@ angular.module('calendarApp', ['ngCookies'])
 	            .then(function(response) {
 
 	        if(response.data.status){    	 
+	        	$scope.newContentSaveError = "";
 	            $scope.events = response.data.response;
 	            console.log($scope.events);
 	            $('#viewModal').modal('hide');
-	            	$scope.fetchCalendarEvents();
-	               
+	            	$timeout(function() {$scope.fetchCalendarEvents();}, 300);     
 	        }
 	        else{
 	        	console.log("Not done");
+	        	$scope.newContentSaveError = response.data.error;
 	        }
 	        	    
 	        });

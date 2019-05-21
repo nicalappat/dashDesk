@@ -112,6 +112,7 @@ angular.module('requestsApp', ['ngCookies'])
          if(response.data.status){
               console.log("Request Approved");
               $scope.fetchContent();
+              $scope.comments = "";
           }
          else{
             console.log("Not found");
@@ -137,6 +138,7 @@ angular.module('requestsApp', ['ngCookies'])
          if(response.data.status){
               console.log("Request Rejected");
               $scope.fetchContent();
+              $scope.comments = "";
           }
          else{
             console.log("Not found");

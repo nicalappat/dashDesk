@@ -19,6 +19,7 @@ angular.module('AdminLoginApp', ['ngCookies'])
         var data = {};
         data.mobile = $scope.username;
         data.password = $scope.password;
+        console.log(data);
         $http({
           method  : 'POST',
           url     : 'http://schooldash.xyz/services/adminlogin.php',

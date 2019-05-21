@@ -278,9 +278,7 @@
             </div>
             <div class="static-content-wrapper">
                <div class="static-content">
-                  <div class="page-content">
-                     <ol class="breadcrumb">
-                     </ol>
+                  <div class="page-content" style="padding-top: 2%;">
                      <div class="container-fluid">
                         
                         <div data-widget-group="group1">
@@ -310,19 +308,17 @@
                                                 <td>Category</td>
                                                 <td>Title</td>
                                                 <td>Created Date</td>
-                                                <td></td>
                                              </tr>
                                           </thead>
                                           <tbody>
-                                             <tr ng-repeat="content in active_content track by $index">
+                                             <tr ng-repeat="content in active_content track by $index" ng-click="viewMyContent(content)" style="cursor: pointer;">
                                                 <td>#{{((currentDisplayPage-1)*10) + $index + 1}}</td>
                                                 <td><i class="ti ti-thumb-up" ng-show="content.status == 1" aria-hidden="true" style="color: green"></i><i class="ti ti-thumb-down" ng-show="content.status == 2" aria-hidden="true" style="color: red"></i><i class="ti ti-hand-open" ng-show="content.status == 0" aria-hidden="true" style="color: orange"></i></td>
-                                                <td>{{content.studentfName + " " + content.studentlName}}</td>
+                                                <td style="font-weight: bold;">{{content.studentfName + " " + content.studentlName}}</td>
                                                 <td style="font-weight: bold;">{{content.studentClass + "-" + content.studentDivision }} </td>
                                                 <td>{{content.category}}
                                                 <td>{{content.title}}</td>
                                                 <td>{{content.createdDate}}
-                                                <td><a ng-click="viewMyContent(content)"><i class="fa fa-eye" aria-hidden="true" style="color: #bdc3c7"></i></a></td>
                                              </tr>
                                           </tbody>
                                        </table>

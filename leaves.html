@@ -278,9 +278,7 @@
             </div>
             <div class="static-content-wrapper">
                <div class="static-content">
-                  <div class="page-content">
-                     <ol class="breadcrumb">
-                     </ol>
+                  <div class="page-content" style="padding-top: 2%;">
                      <div class="container-fluid">
                         
                         <div data-widget-group="group1">
@@ -302,7 +300,7 @@
                                        <!-- Display Events -->
                                        <table class="table m-n" ng-if="active_content.length && isContentFound">
                                           <thead>
-                                             <tr style="font-weight: 400; color: #2980b9 !important; background: #ecf0f1">
+                                             <tr style="font-weight: 400; color: #2980b9 !important; background: #ecf0f1;">
                                                 <td></td>
                                                 <td>Status</td>
                                                 <td>Student Name</td>
@@ -310,19 +308,17 @@
                                                 <td>Brief</td>
                                                 <td>From</td>
                                                 <td>To</td>
-                                                <td></td>
                                              </tr>
                                           </thead>
                                           <tbody>
-                                             <tr ng-repeat="content in active_content track by $index">
+                                             <tr ng-repeat="content in active_content track by $index" style="cursor: pointer;" ng-click="viewMyContent(content)">
                                                 <td>#{{((currentDisplayPage-1)*10) + $index + 1}}</td>
                                                 <td><i class="ti ti-thumb-up" ng-show="content.status == 1" aria-hidden="true" style="color: green"></i><i class="ti ti-thumb-down" ng-show="content.status == 2" aria-hidden="true" style="color: red"></i><i class="ti ti-hand-open" ng-show="content.status == 0" aria-hidden="true" style="color: orange"></i></td>
-                                                <td>{{content.studentfName + " " + content.studentlName}}</td>
+                                                <td style="font-weight: bold;">{{content.studentfName + " " + content.studentlName}}</td>
                                                 <td style="font-weight: bold;">{{content.studentClass + "-" + content.studentDivision }} </td>
                                                 <td>{{content.brief}}</td>
                                                 <td>{{content.leaveFrom}}</td>
                                                 <td>{{content.leaveTo}}</td>
-                                                <td><a ng-click="viewMyContent(content)"><i class="fa fa-eye" aria-hidden="true" style="color: #bdc3c7"></i></a></td>
                                              </tr>
                                           </tbody>
                                        </table>
